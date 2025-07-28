@@ -43,13 +43,12 @@ Your mission? Type as many valid, creative answers as you can — fast! The more
 ## 🌍 Live Demo
 
 Play it here:  
-👉 [https://your-username.github.io/things-now/](https://your-username.github.io/things-now/)
+👉 [https://KvnonMjomba.github.io/things-now/](https://KvnonMjomba.github.io/things-now/)
 
-(Replace `your-username` with your actual GitHub handle)
 
 ---
 
-## 💡 Built With
+ Built With
 
 - HTML5
 - JavaScript
