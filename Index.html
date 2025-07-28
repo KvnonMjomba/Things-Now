@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Things.Now - Timer Edition</title>
+  <style>
+    body { display: flex; flex-direction: column; align-items: center; justify-content: top; min-height: 100vh;
+      font-family: sans-serif; background: linear-gradient(#b3cde0, #6497b1); margin: 0; padding: 20px; color: #333; }
+    .card { background: white; border-radius: 12px; padding: 20px; width: 100%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    h1 { margin: 0 0 10px; font-size: 2em; text-align: center; color: #005b96; }
+    .prompt { font-size: 1.3em; margin-bottom: 12px; color: #03396c; }
+    .input-group { display: flex; margin-bottom: 12px; }
+    input { flex: 1; padding: 8px; font-size: 1em; border: 1px solid #ccc; border-radius: 4px 0 0 4px; }
+    button { padding: 9px 16px; font-size: 1em; border: none; background: #005b96; color: white; border-radius: 0 4px 4px 0; cursor: pointer; }
+    button:hover { background: #014f86; }
+    .score, .timer { font-weight: bold; margin-top: 10px; }
+    ul { max-height: 200px; overflow-y: auto; margin: 8px 0 0 0; padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Things.Now</h1>
+    <div class="prompt" id="prompt">Prompt</div>
+    <div class="input-group">
+      <input type="text" id="answer" placeholder="Type your answer…" autocomplete="off" />
+      <button id="submit">Submit</button>
+    </div>
+    <div class="score" id="score">Score: 0</div>
+    <div class="timer" id="timer">Time Left: 60s</div>
+    <ul id="log"></ul>
+  </div>
+
+  <script>
+    const prompts = [
+      "A thing that flies",
+      "Something cold",
+      "Found in a garage",
+      "A red object",
+      "Something you wear",
+      "Something that makes noise",
+      "A famous Kenyan thing"
+    ];
+
+    function nextPrompt(){
+      return prompts[Math.floor(Math.random() * prompts.length)];
+    }
+
+    let current = nextPrompt();
+    let score = 0;
+    let timeLeft = 60;
+    let gameOver = false;
+
+    document.getElementById('prompt').textContent = current;
+
+    function submitAnswer(){
+      if (gameOver) return;
+      const ans = document.getElementById('answer').value.trim();
+      if(!ans) return;
+      const pts = ans.length > 10 ? 5 : ans.length > 5 ? 3 : 1;
+      score += pts;
+      document.getElementById('score').textContent = "Score: " + score;
+      const li = document.createElement('li');
+      li.textContent = `+${pts} – "${ans}"`;
+      document.getElementById('log').appendChild(li);
+      document.getElementById('answer').value = "";
+      current = nextPrompt();
+      document.getElementById('prompt').textContent = current;
+      document.getElementById('answer').focus();
+    }
+
+    function countdown(){
+      const timerElement = document.getElementById('timer');
+      const interval = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `Time Left: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          gameOver = true;
+          timerElement.textContent = `⏳ Time's Up! Final Score: ${score}`;
+          document.getElementById('submit').disabled = true;
+          document.getElementById('answer').disabled = true;
+        }
+      }, 1000);
+    }
+
+    document.getElementById('submit').onclick = submitAnswer;
+    document.getElementById('answer').addEventListener('keydown', e => {
+      if(e.key === 'Enter') submitAnswer();
+    });
+
+    countdown(); // start the timer
+  </script>
+</body>
+  </html
